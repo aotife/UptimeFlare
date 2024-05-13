@@ -1,60 +1,59 @@
 const pageConfig = {
-  // Title for your status page
-  title: "lyc8503's Status Page",
-  // Links shown at the header of your status page, could set `highlight` to `true`
+  // 您的状态页面标题
+  title: "lyc8503的状态页面",
+  // 显示在状态页面标题处的链接，可以将 `highlight` 设置为 `true`
   links: [
-    { link: 'https://github.com/lyc8503', label: 'GitHub' },
-    { link: 'https://blog.lyc8503.site/', label: 'Blog' },
-    { link: 'mailto:me@lyc8503.site', label: 'Email Me', highlight: true },
+    { link: 'https://home.chjina.com', label: 'Home' },
+    { link: 'https://chjina.com', label: 'Blog' },
   ],
 }
 
 const workerConfig = {
-  // Write KV at most every 3 minutes unless the status changed.
+  // 最多每 3 分钟写入 KV，除非状态发生变化。
   kvWriteCooldownMinutes: 3,
-  // Define all your monitors here
+  // 在这里定义所有您的监视器
   monitors: [
-    // Example HTTP Monitor
+    // 示例 HTTP 监视器
     {
-      // `id` should be unique, history will be kept if the `id` remains constant
+      // `id` 应唯一，如果 `id` 保持不变，则会保留历史记录
       id: 'foo_monitor',
-      // `name` is used at status page and callback message
-      name: 'My API Monitor',
-      // `method` should be a valid HTTP Method
+      // `name` 在状态页面和回调消息中使用
+      name: '我的Blog',
+      // `method` 应为有效的 HTTP 方法
       method: 'POST',
-      // `target` is a valid URL
-      target: 'https://example.com',
-      // [OPTIONAL] `tooltip` is ONLY used at status page to show a tooltip
-      tooltip: 'This is a tooltip for this monitor',
-      // [OPTIONAL] `statusPageLink` is ONLY used for clickable link at status page
-      statusPageLink: 'https://example.com',
-      // [OPTIONAL] `expectedCodes` is an array of acceptable HTTP response codes, if not specified, default to 2xx
+      // `target` 是有效的 URL
+      target: 'https://chjina.com',
+      // [可选] `tooltip` 仅在状态页面上显示工具提示
+      tooltip: '这是此监视器的工具提示',
+      // [可选] `statusPageLink` 仅用于状态页面上的可点击链接
+      statusPageLink: 'https://chjina.com',
+      // [可选] `expectedCodes` 是可接受的 HTTP 响应代码的数组，如果未指定，则默认为 2xx
       expectedCodes: [200],
-      // [OPTIONAL] `timeout` in millisecond, if not specified, default to 10000
+      // [可选] `timeout` 单位为毫秒，如果未指定，则默认为 10000
       timeout: 10000,
-      // [OPTIONAL] headers to be sent
+      // [可选] 要发送的标头
       headers: {
         'User-Agent': 'Uptimeflare',
         Authorization: 'Bearer YOUR_TOKEN_HERE',
       },
-      // [OPTIONAL] body to be sent
+      // [可选] 要发送的主体
       body: 'Hello, world!',
-      // [OPTIONAL] if specified, the response must contains the keyword to be considered as operational.
+      // [可选] 如果指定，响应必须包含关键字才能被视为正常。
       responseKeyword: 'success',
-      // [OPTIONAL] if specified, the check will run in your specified region,
-      // refer to docs https://github.com/lyc8503/UptimeFlare/wiki/Geo-specific-checks-setup before setting this value
+      // [可选] 如果指定，检查将在您指定的地区运行，
+      // 在设置此值之前，请参考文档 https://github.com/lyc8503/UptimeFlare/wiki/Geo-specific-checks-setup
       checkLocationWorkerRoute: 'https://xxx.example.com',
     },
-    // Example TCP Monitor
+    // 示例 TCP 监视器
     {
       id: 'test_tcp_monitor',
-      name: 'Example TCP Monitor',
-      // `method` should be `TCP_PING` for tcp monitors
+      name: '示例 TCP 监视器',
+      // `method` 应为 `TCP_PING`，用于 TCP 监视器
       method: 'TCP_PING',
-      // `target` should be `host:port` for tcp monitors
-      target: '1.2.3.4:22',
-      tooltip: 'My production server SSH',
-      statusPageLink: 'https://example.com',
+      // `target` 应为 `host:port`，用于 TCP 监视器
+      target: 'dns.chjina.com:1688',
+      tooltip: 'KMS',
+      statusPageLink: 'https://chjina.com/kms',
       timeout: 5000,
     },
   ],
@@ -67,10 +66,10 @@ const workerConfig = {
       timeNow: number,
       reason: string
     ) => {
-      // This callback will be called when there's a status change for any monitor
-      // Write any Typescript code here
+      // 当任何监视器的状态发生变化时将调用此回调函数
+      // 在这里编写任何 TypeScript 代码
 
-      // By default, this sends Bark and Telegram notification on every status change if you setup Cloudflare env variables correctly.
+      // 默认情况下，如果正确设置了 Cloudflare 环境变量，每次状态变化时都会发送 Bark 和 Telegram 通知。
       await notify(env, monitor, isUp, timeIncidentStart, timeNow, reason)
     },
     onIncident: async (
@@ -80,16 +79,16 @@ const workerConfig = {
       timeNow: number,
       reason: string
     ) => {
-      // This callback will be called EVERY 1 MINTUE if there's an on-going incident for any monitor
-      // Write any Typescript code here
+      // 如果任何监视器发生正在进行的事件，每分钟都会调用此回调函数
+      // 在这里编写任何 TypeScript 代码
     },
   },
 }
 
-// Below is code for sending Telegram & Bark notification
-// You can safely ignore them
+// 以下是发送 Telegram 和 Bark 通知的代码
+// 您可以安全地忽略它们
 const escapeMarkdown = (text: string) => {
-  return text.replace(/[_*[\](){}~`>#+\-=|.!\\]/g, '\\$&');
+  return text.replace(/[_*[\](){}~`>#+\-=|.!\\]/g, '\\{{input}}');
 };
 
 async function notify(
@@ -112,91 +111,34 @@ async function notify(
   let downtimeDuration = Math.round((timeNow - timeIncidentStart) / 60);
   const timeIncidentStartFormatted = dateFormatter.format(new Date(timeIncidentStart * 1000));
   let statusText = isUp
-    ? `The service is up again after being down for ${downtimeDuration} minutes.`
-    : `Service became unavailable at ${timeIncidentStartFormatted}. Issue: ${reason || 'unspecified'}`;
+    ? `服务在停机 ${downtimeDuration} 分钟后恢复正常。`
+    : `服务在 ${timeIncidentStartFormatted} 发生故障。问题：${reason || '未指定'}`;
 
-  console.log('Notifying: ', monitor.name, statusText);
+  console.log('通知：', monitor.name, statusText);
 
   if (env.BARK_SERVER && env.BARK_DEVICE_KEY) {
     try {
-      let title = isUp ? `✅ ${monitor.name} is up again!` : `🔴 ${monitor.name} is currently down.`;
+      let title = isUp ? `✅ ${monitor.name} 再次正常！` : `🔴 ${monitor.name} 当前不可用。`;
       await sendBarkNotification(env, monitor, title, statusText);
     } catch (error) {
-      console.error('Error sending Bark notification:', error);
+      console.error('发送 Bark 通知时出错：', error);
     }
   }
 
   if (env.SECRET_TELEGRAM_CHAT_ID && env.SECRET_TELEGRAM_API_TOKEN) {
     try {
-      let operationalLabel = isUp ? 'Up' : 'Down';
+      let operationalLabel = isUp ? '正常' : '不正常';
       let statusEmoji = isUp ? '✅' : '🔴';
       let telegramText = `*${escapeMarkdown(
         monitor.name,
-      )}* is currently *${operationalLabel}*\n${statusEmoji} ${escapeMarkdown(statusText)}`;
+      )}* 目前 *${operationalLabel}*\n${statusEmoji} ${escapeMarkdown(statusText)}`;
       await notifyTelegram(env, monitor, isUp, telegramText);
     } catch (error) {
-      console.error('Error sending Telegram notification:', error);
+      console.error('发送 Telegram 通知时出错：', error);
     }
   }
 }
 
 export async function notifyTelegram(env: any, monitor: any, operational: boolean, text: string) {
   const chatId = env.SECRET_TELEGRAM_CHAT_ID;
-  const apiToken = env.SECRET_TELEGRAM_API_TOKEN;
-
-  const payload = new URLSearchParams({
-    chat_id: chatId,
-    parse_mode: 'MarkdownV2',
-    text: text,
-  });
-
-  try {
-    const response = await fetch(`https://api.telegram.org/bot${apiToken}/sendMessage`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: payload.toString(),
-    });
-
-    if (!response.ok) {
-      console.error(
-        `Failed to send Telegram notification "${text}",  ${response.status} ${response.statusText
-        } ${await response.text()}`,
-      );
-    }
-  } catch (error) {
-    console.error('Error sending Telegram notification:', error);
-  }
-}
-
-async function sendBarkNotification(env: any, monitor: any, title: string, body: string, group: string = '') {
-  const barkServer = env.BARK_SERVER;
-  const barkDeviceKey = env.BARK_DEVICE_KEY;
-  const barkUrl = `${barkServer}/push`;
-  const data = {
-    title: title,
-    body: body,
-    group: group,
-    url: monitor.url,
-    device_key: barkDeviceKey,
-  };
-
-  const response = await fetch(barkUrl, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
-
-  if (response.ok) {
-    console.log('Bark notification sent successfully.');
-  } else {
-    const respText = await response.text();
-    console.error('Failed to send Bark notification:', response.status, response.statusText, respText);
-  }
-}
-
-// Don't forget this, otherwise compilation fails.
-export { pageConfig, workerConfig }
+  const apiToken =
