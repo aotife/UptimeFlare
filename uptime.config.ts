@@ -3,9 +3,8 @@ const pageConfig = {
   title: "lyc8503的状态页面",
   // 在状态页面标题处显示的链接，可以将 `highlight` 设置为 `true`
   links: [
-    { link: 'https://github.com/lyc8503', label: 'GitHub' },
-    { link: 'https://blog.lyc8503.site/', label: '博客' },
-    { link: 'mailto:me@lyc8503.site', label: '给我发邮件', highlight: true },
+    { link: 'https://home.chjina.com', label: '导航' },
+    { link: 'https://chjina.com', label: '博客' },
   ],
 }
 
@@ -19,15 +18,15 @@ const workerConfig = {
       // `id` 应唯一，如果 `id` 保持不变，则会保留历史记录
       id: 'foo_monitor',
       // `name` 用于状态页面和回调消息
-      name: '我的 API 监视器',
+      name: '我的博客',
       // `method` 应为有效的 HTTP 方法
       method: 'POST',
       // `target` 是有效的 URL
-      target: 'https://example.com',
+      target: 'https://chjina.com',
       // [可选] `tooltip` 仅在状态页面上显示工具提示
       tooltip: '这是此监视器的工具提示',
       // [可选] `statusPageLink` 仅用于状态页面上的可点击链接
-      statusPageLink: 'https://example.com',
+      statusPageLink: 'https://chjina.com',
       // [可选] `expectedCodes` 是可接受的 HTTP 响应代码的数组，如果未指定，则默认为 2xx
       expectedCodes: [200],
       // [可选] `timeout` 毫秒为单位，如果未指定，则默认为 10000
@@ -48,13 +47,13 @@ const workerConfig = {
     // 示例 TCP 监视器
     {
       id: 'test_tcp_monitor',
-      name: '示例 TCP 监视器',
+      name: 'KMS激活服务',
       // `method` 应为 `TCP_PING`，用于 TCP 监视器
       method: 'TCP_PING',
       // `target` 应为 `host:port`，用于 TCP 监视器
-      target: '1.2.3.4:22',
+      target: 'kms.chjina.com:1688',
       tooltip: '我的生产服务器 SSH',
-      statusPageLink: 'https://example.com',
+      statusPageLink: 'https://chjina.com/kms',
       timeout: 5000,
     },
   ],
